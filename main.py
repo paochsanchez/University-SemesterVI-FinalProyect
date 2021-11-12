@@ -9,7 +9,7 @@ import csv
 
 #Variables Globales y Constantes
 CSV_Data = []
-Param_Rocchio = [(0.75, 0.25), (0.85, 0.15), (0.95, 0.05)]
+Param_Rocchio = [[0.75, 0.25], [0.85, 0.15], [0.95, 0.05]]
 Words_List =[]
 Clases ={}
 
@@ -43,13 +43,76 @@ def prepareWeights():
         for term in termsList:            
             wordData = term.split("/")
             tuples[wordData[0]] = wordData[1]
-        item["TERMINOS[termino/peso]"]  = tuples
+        for term in Words_List:
+            if term not in tuples.keys():
+                tuples[term] = 0
+        item["TERMINOS[termino/peso]"] = tuples
+
+            
+            
+def calculateRocchioCP(clase):
+    actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
+    cont = 0
+    averageCP = {}
+    for doc in actualDocs:
+        cont += 1
+        for word in Words_List:
+            if word not in averageCP.keys():
+                averageCP[word]= float(doc["TERMINOS[termino/peso]"].get(word, 0))
+            else:
+                averageCP[word] = averageCP[word]+float(doc["TERMINOS[termino/peso]"].get(word, 0))
+            if cont == Clases[clase]:
+                averageCP[word] = averageCP[word]/int(Clases[clase]) if averageCP[word]!=0 else 0
+    return averageCP             
+        
+def calculateRocchioNotCP(clase):
+    actualDocs = [item for item in CSV_Data if item["CLASE"] != clase]
+    total = len(CSV_Data) - Clases[clase]
+    cont = 0
+    averageCP = {}
+    for doc in actualDocs:
+        cont += 1
+        for word in Words_List:
+            if word not in averageCP.keys():
+                averageCP[word]= float(doc["TERMINOS[termino/peso]"].get(word, 0))
+            else:
+                averageCP[word] = averageCP[word]+float(doc["TERMINOS[termino/peso]"].get(word, 0))
+            if cont == total:
+                averageCP[word] = averageCP[word]/int(total) if averageCP[word]!=0 else 0
+    return averageCP            
+
+def calculateRocchioQCP(CP,notCP,param):
+    qCP = {}
+    for value in CP:
+        qCP[value] = Param_Rocchio[param][0]*float(CP[value])
+    for value in notCP:
+        qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
+    return qCP
+
+def rocchioAlgorithm():
+    allqCp = {}
+    for clase in Clases:
+        CP = calculateRocchioCP(clase)
+        notCP = calculateRocchioNotCP(clase)
+        allqCp[clase] = calculateRocchioQCP(CP,notCP,0)
+        
+    for doc in CSV_Data:  
+        print("********************")  
+        print(doc["DOCID"])  
+        valDoc={}
+        for cp in allqCp:
+            sumMult = 0
+            for value in allqCp[cp]:
+                sumMult += float(doc["TERMINOS[termino/peso]"].get(value, 0)) *float(allqCp[cp][value])
+            valDoc[cp] = sumMult
+        print(valDoc[max(valDoc, key=valDoc.get)])
+        
         
 def main():
-    listWordsWithWeight= readCSVFile()
+    listWordsWithWeight = readCSVFile()
     prepareWords(listWordsWithWeight)
     prepareWeights()
-    print(Clases)
+    rocchioAlgorithm()
     
     
 main()

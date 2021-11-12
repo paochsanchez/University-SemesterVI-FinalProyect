@@ -54,7 +54,6 @@ def calculateRocchioCP(clase):
     actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
     cont = 0
     averageCP = {}
-    print("**************************")
     for doc in actualDocs:
         cont += 1
         for word in Words_List:
@@ -64,8 +63,6 @@ def calculateRocchioCP(clase):
                 averageCP[word] = averageCP[word]+float(doc["TERMINOS[termino/peso]"].get(word, 0))
             if cont == Clases[clase]:
                 averageCP[word] = averageCP[word]/int(Clases[clase]) if averageCP[word]!=0 else 0
-    for word in averageCP:
-        print(word+"\t"+str(averageCP[word]))
     return averageCP             
         
 def calculateRocchioNotCP(clase):
@@ -89,7 +86,7 @@ def calculateRocchioQCP(CP,notCP,param):
     for value in CP:
         qCP[value] = Param_Rocchio[param][0]*float(CP[value])
     for value in notCP:
-        qCP[value] = qCP[value] - Param_Rocchio[param][1]*float(notCP[value])
+        qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
     return qCP
  
 def escalofonesRocchio(qCP,doc):

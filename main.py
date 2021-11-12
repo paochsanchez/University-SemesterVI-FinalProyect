@@ -88,12 +88,7 @@ def calculateRocchioQCP(CP,notCP,param):
     for value in notCP:
         qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
     return qCP
- 
-def escalofonesRocchio(qCP,doc):
-    addition = 0
-    for val in qCP:
-        addition += qCP[val] * float(doc["TERMINOS[termino/peso]"].get(val, 0)) 
-        
+
 def rocchioAlgorithm():
     allqCp = {}
     for clase in Clases:
@@ -101,17 +96,20 @@ def rocchioAlgorithm():
         notCP = calculateRocchioNotCP(clase)
         allqCp[clase] = calculateRocchioQCP(CP,notCP,0)
         
-    for doc in CSV_Data:    
+    for doc in CSV_Data:  
+        print("********************")  
+        print(doc["DOCID"])  
         valDoc={}
         for cp in allqCp:
             sumMult = 0
             for value in allqCp[cp]:
                 sumMult += float(doc["TERMINOS[termino/peso]"].get(value, 0)) *float(allqCp[cp][value])
             valDoc[cp] = sumMult
+        print(valDoc[max(valDoc, key=valDoc.get)])
         
         
 def main():
-    listWordsWithWeight= readCSVFile()
+    listWordsWithWeight = readCSVFile()
     prepareWords(listWordsWithWeight)
     prepareWeights()
     rocchioAlgorithm()

@@ -1,6 +1,7 @@
 #Aquí iría nuestro proyecto
 #SI HUBIERA UNO :(
 import csv
+import math
 
 # DOCID es el identificador del documento
 # CLASE es la clase a la que pertenece el documento
@@ -107,12 +108,98 @@ def rocchioAlgorithm():
             valDoc[cp] = sumMult
         print(valDoc[max(valDoc, key=valDoc.get)])
         
+
+# ------- Bayesianos Ingenuos -------
+
+def createDictionaryPerClass():
+    frequencyPerClass = {}
+    for clase in Clases:
+        frequencyPerClass[clase] = {}
+        for word in Words_List:
+            frequencyPerClass[clase][word] = 0
+    return frequencyPerClass
+
+def getFrequenciesPerClass():
+    frequencyPerClass = createDictionaryPerClass()
+
+    for clase in Clases:
+        for doc in CSV_Data:
+            if doc['CLASE'] == clase:
+                for terms in doc['TERMINOS[termino/peso]']:
+                    if (doc['TERMINOS[termino/peso]'][terms]!=0):
+                        #print(doc['TERMINOS[termino/peso]'][terms])
+                        frequencyPerClass[clase][terms] += 1
+
+    #print(frequencyPerClass)
+    return frequencyPerClass
+
+
+def calculateNis(frequencyPerClass):
+    #Sumar apariciones de cada palabra en frequencyPerClass
+    nis = {}
+    for word in Words_List:
+        nis[word] = 0
+    
+    for clase in Clases:
+        for word in Words_List:
+            nis[word] += frequencyPerClass[clase][word]
+
+    return nis
+
+def getPIPPerClass(frequencyPerClass):
+    PIPPerClass = createDictionaryPerClass()
+
+    for clase in Clases:
+        for word in Words_List:
+            PIPPerClass[clase][word] = (1+frequencyPerClass[clase][word])/(2+Clases[clase])
+
+    return PIPPerClass
+
+def getQIPPerClass(frequencyPerClass, nis):
+    QIPPerClass = createDictionaryPerClass()
+    N = 0 
+    for clase in Clases: N += Clases[clase]
+
+    for clase in Clases:
+        for word in Words_List:
+            QIPPerClass[clase][word] = (1+nis[word]-frequencyPerClass[clase][word])/(2+N-Clases[clase])
+
+    return QIPPerClass
+
+def bayesianosIngenuosAlgorithm():
+    frequencyPerClass = getFrequenciesPerClass()
+    nis = calculateNis(frequencyPerClass)
+    PIPPerClass = getPIPPerClass(frequencyPerClass)
+    QIPPerClass = getQIPPerClass(frequencyPerClass, nis)
+
+    docs = {}
+
+    for doc in CSV_Data:
+        print('----------------------')
+        print(doc['DOCID'])
+        docs[doc['DOCID']] = {'CLASE ORIGINAL': doc['CLASE'], 'CLASE OTORGADA': '', }
+
+        similarityDict = {}
+
+        for clase in Clases:
+            similarityVal = 0
+            for word in Words_List:
+                if doc['TERMINOS[termino/peso]'][word] != 0:
+                    #print(word)
+                    similarityVal += math.log((PIPPerClass[clase][word]/(1-PIPPerClass[clase][word])),10) + math.log(((1-QIPPerClass[clase][word])/QIPPerClass[clase][word]),10)
+            #print(similarityVal)
+            similarityDict[clase] = similarityVal
+        print(max(similarityDict, key=similarityDict.get))
+        docs[doc['DOCID']]['CLASE OTORGADA'] = max(similarityDict, key=similarityDict.get)
+        print(similarityDict[max(similarityDict, key=similarityDict.get)])
+    print(docs)
+
         
 def main():
     listWordsWithWeight = readCSVFile()
     prepareWords(listWordsWithWeight)
     prepareWeights()
     rocchioAlgorithm()
-    
+    bayesianosIngenuosAlgorithm()
     
 main()

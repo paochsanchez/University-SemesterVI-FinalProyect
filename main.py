@@ -3,6 +3,7 @@
 import csv
 import math
 import json
+import ast
 from collections import OrderedDict
 
 # DOCID es el identificador del documento
@@ -10,14 +11,17 @@ from collections import OrderedDict
 # NUM-TERMINOS es el número de términos del documento
 # TERMINOS[termino/peso] último campo contiene una lista con los términos y sus correspondientes pesos
 
-#Variables Globales y Constantes
-paths =['training-set.csv','test-set.csv']
+# ------- Variables Globales y Constantes ------- 
+
 CSV_Data = []
 CSV_Data_2 = []
 Param_Rocchio = [[0.75, 0.25], [0.85, 0.15], [0.95, 0.05]]
 Clases ={}
 Clases_2 ={}
 
+# ------- Base -------      
+        
+        
 def readCSVFile(path,CSV_Data_,Clases_):
     Words_List_WW =[]
     with open(path, mode='r') as csv_file:
@@ -54,7 +58,8 @@ def prepareWeights(Words_List,CSV_Data_):
                 tuples[term] = 0
         item["TERMINOS[termino/peso]"] = tuples
 
-            
+# ------- Rocchio -------      
+                    
             
 def calculateRocchioCP(clase, Words_List):
     actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
@@ -95,26 +100,39 @@ def calculateRocchioQCP(CP,notCP,param):
         qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
     return qCP
 
-def rocchioAlgorithm(W_L):
+def rocchioAlgorithm(W_L, param):
     allqCp = {}
     for clase in Clases:
         CP = calculateRocchioCP(clase, W_L)
         notCP = calculateRocchioNotCP(clase, W_L)
-        allqCp[clase] = calculateRocchioQCP(CP,notCP,0)
-        
+        allqCp[clase] = calculateRocchioQCP(CP,notCP,param)
+    return allqCp
+
+def rocchioAlgorithm2(allqCp,CSV_Data_2):   
+    print("Rocchio Algorithm")
+    docs = {}   
     for doc in CSV_Data_2:  
-        print("********************")  
-        print(doc["DOCID"])  
         valDoc={}
+        valDoc["Clase Real"] = doc["CLASE"]
+        valDoc["Clase Asignada Rocchio"] = 0
+        valDoc["Similitudes"] = {}
+        id = doc["DOCID"]
         for cp in allqCp:
             sumMult = 0
             for value in allqCp[cp]:
                 sumMult += float(doc["TERMINOS[termino/peso]"].get(value, 0)) *float(allqCp[cp][value])
-            valDoc[cp] = sumMult
-        print(valDoc[max(valDoc, key=valDoc.get)])
-        
+            valDoc["Similitudes"][cp] = sumMult
+        valDoc["Clase Asignada Rocchio"] = max(valDoc["Similitudes"], key=lambda key: valDoc["Similitudes"][key])
+        docs[id] = valDoc
+        print(id+"\t"+doc["CLASE"]+"\t"+valDoc["Clase Asignada Rocchio"])    
+    res = json.dumps(docs,sort_keys=False, indent=4)
+    new_file= open("Rocchio.txt",mode="w")
+    new_file.write(res)
+    new_file.close()
+    print("")    
 
 # ------- Bayesianos Ingenuos -------
+
 
 def createDictionaryPerClass(Words_List):
     frequencyPerClass = {}
@@ -137,7 +155,6 @@ def getFrequenciesPerClass(Words_List):
 
     #print(frequencyPerClass)
     return frequencyPerClass
-
 
 def calculateNis(Words_List, frequencyPerClass):
     #Sumar apariciones de cada palabra en frequencyPerClass
@@ -172,12 +189,15 @@ def getQIPPerClass(Words_List, frequencyPerClass, nis):
 
     return QIPPerClass
 
-def bayesianosIngenuosAlgorithm(Words_List, Words_List_2):
+def bayesianosIngenuosAlgorithm(Words_List):
     frequencyPerClass = getFrequenciesPerClass(Words_List)
     nis = calculateNis(Words_List, frequencyPerClass)
     PIPPerClass = getPIPPerClass(Words_List, frequencyPerClass)
     QIPPerClass = getQIPPerClass(Words_List, frequencyPerClass, nis)
+    return [PIPPerClass,QIPPerClass]
 
+def bayesianosIngenuosAlgorithm2(PIPPerClass, QIPPerClass, Words_List_2, CSV_Data_2, Clases_2):
+    print("Bayesianos Ingenuos Algorithm")
     docs = {}
 
     for doc in CSV_Data_2:
@@ -197,23 +217,85 @@ def bayesianosIngenuosAlgorithm(Words_List, Words_List_2):
         sorted_dict = {k: v for k, v in sorted_tuples}
         docs[int(doc['DOCID'])]['SIMILITUDES'] = sorted_dict
         docs[int(doc['DOCID'])]['CLASE OTORGADA'] = max(sorted_dict, key=sorted_dict.get)
+        
+        print(doc['DOCID']+"\t"+doc["CLASE"]+"\t"+docs[int(doc['DOCID'])]['CLASE OTORGADA'])
+
     dictionary_items = docs.items()
     docs = dict(sorted(dictionary_items))
-    print(json.dumps(docs,sort_keys=False, indent=4))
-
+    res = json.dumps(docs,sort_keys=False, indent=4)
+    new_file= open("BayesianosIngenuos.txt",mode="w")
+    new_file.write(res)
+    new_file.close()
+# ------- main -------      
+        
         
 def main():
+    print("Proyecto Final - RIT")
+    print("--------------------")
+    print("1. Ingresar datos de entrenamiento")
+    print("2. Ingresar datos de prueba")
+    print("3. Salir")
+    print("Seleccione una opcion: ")
+    choice = input()
     
-    listWWW = readCSVFile(paths[0],CSV_Data,Clases)
-    listWWW_2 = readCSVFile(paths[1],CSV_Data_2,Clases_2)
+    if(choice=="1"):
+        
+        print("Ingrese la dirección de los datos: ")
+        path = input()
+        
+        print("El algoritmo Rocchio posee tres pares de párametos:")
+        print("1. (Beta = 0.75, Gama=0.25)")
+        print("2. (Beta = 0.85, Gama=0.15)")
+        print("3. (Beta = 0.95, Gama=0.05)")
+        print("Seleccione un parámetro: ")
+        choiceParam = input()
+        if(choice!="1" and choice!="2" and choice!="3"): 
+            print("El valor ingresado no es válido")
+            print("Se pondrá por defecto el valor 1")
+            choice==1
+        listWWW = readCSVFile(path,CSV_Data,Clases)
+        Words_List = prepareWords(listWWW)
+        prepareWeights(Words_List,CSV_Data)
+        
+        res = rocchioAlgorithm(Words_List,int(choiceParam)-1)
+        new_file= open("Training-Rocchio.txt",mode="w")
+        new_file.write(str(res))
+        new_file.close()
+        
+        res = bayesianosIngenuosAlgorithm(Words_List)
+        new_file= open("Training-BI.txt",mode="w")
+        new_file.write(str(res))
+        new_file.close()
+        print("")
+    elif(choice=="2"):
+        
+        print("Ingrese la dirección de los datos: ")
+        path = input()
+        
+        CSV_Data_2 = []
+        Clases_2 = {}
+        
+        listWWW_2 = readCSVFile(path,CSV_Data_2,Clases_2)
+        Words_List_2 = prepareWords(listWWW_2)
+        prepareWeights(Words_List_2,CSV_Data_2)
 
-    Words_List = prepareWords(listWWW)
-    Words_List_2 = prepareWords(listWWW_2)
-    
-    prepareWeights(Words_List,CSV_Data)
-    prepareWeights(Words_List_2,CSV_Data_2)
-    
-    #rocchioAlgorithm(Words_List)
-    bayesianosIngenuosAlgorithm(Words_List, Words_List_2)
+        new_file= open("Training-Rocchio.txt",mode="r")
+        text = new_file.read()
+        res = ast.literal_eval(text)
+
+        rocchioAlgorithm2(res,CSV_Data_2)
+        
+        new_file= open("Training-BI.txt",mode="r")
+        text = new_file.read()
+        res = ast.literal_eval(text)
+        
+        bayesianosIngenuosAlgorithm2(res[0],res[1],Words_List_2, CSV_Data_2, Clases_2)
+    elif(choice=="3"):
+        return   
+    else:
+        print("Error. Intente nuevamente.")
+        return main()
+    return main()
+
 
 main()

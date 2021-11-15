@@ -2,6 +2,8 @@
 #SI HUBIERA UNO :(
 import csv
 import math
+import json
+from collections import OrderedDict
 
 # DOCID es el identificador del documento
 # CLASE es la clase a la que pertenece el documento
@@ -41,7 +43,6 @@ def prepareWords(Words_List_WW):
     return wordList
 
 def prepareWeights(Words_List,CSV_Data_):
-    print(CSV_Data_)
     for item in CSV_Data_:
         termsList = item.get("TERMINOS[termino/peso]").split(" ")
         tuples = {}
@@ -115,7 +116,7 @@ def rocchioAlgorithm(W_L):
 
 # ------- Bayesianos Ingenuos -------
 
-def createDictionaryPerClass():
+def createDictionaryPerClass(Words_List):
     frequencyPerClass = {}
     for clase in Clases:
         frequencyPerClass[clase] = {}
@@ -123,8 +124,8 @@ def createDictionaryPerClass():
             frequencyPerClass[clase][word] = 0
     return frequencyPerClass
 
-def getFrequenciesPerClass():
-    frequencyPerClass = createDictionaryPerClass()
+def getFrequenciesPerClass(Words_List):
+    frequencyPerClass = createDictionaryPerClass(Words_List)
 
     for clase in Clases:
         for doc in CSV_Data:
@@ -138,7 +139,7 @@ def getFrequenciesPerClass():
     return frequencyPerClass
 
 
-def calculateNis(frequencyPerClass):
+def calculateNis(Words_List, frequencyPerClass):
     #Sumar apariciones de cada palabra en frequencyPerClass
     nis = {}
     for word in Words_List:
@@ -148,10 +149,11 @@ def calculateNis(frequencyPerClass):
         for word in Words_List:
             nis[word] += frequencyPerClass[clase][word]
 
+    #print(nis)
     return nis
 
-def getPIPPerClass(frequencyPerClass):
-    PIPPerClass = createDictionaryPerClass()
+def getPIPPerClass(Words_List, frequencyPerClass):
+    PIPPerClass = createDictionaryPerClass(Words_List)
 
     for clase in Clases:
         for word in Words_List:
@@ -159,8 +161,8 @@ def getPIPPerClass(frequencyPerClass):
 
     return PIPPerClass
 
-def getQIPPerClass(frequencyPerClass, nis):
-    QIPPerClass = createDictionaryPerClass()
+def getQIPPerClass(Words_List, frequencyPerClass, nis):
+    QIPPerClass = createDictionaryPerClass(Words_List)
     N = 0 
     for clase in Clases: N += Clases[clase]
 
@@ -170,33 +172,34 @@ def getQIPPerClass(frequencyPerClass, nis):
 
     return QIPPerClass
 
-def bayesianosIngenuosAlgorithm():
-    frequencyPerClass = getFrequenciesPerClass()
-    nis = calculateNis(frequencyPerClass)
-    PIPPerClass = getPIPPerClass(frequencyPerClass)
-    QIPPerClass = getQIPPerClass(frequencyPerClass, nis)
+def bayesianosIngenuosAlgorithm(Words_List, Words_List_2):
+    frequencyPerClass = getFrequenciesPerClass(Words_List)
+    nis = calculateNis(Words_List, frequencyPerClass)
+    PIPPerClass = getPIPPerClass(Words_List, frequencyPerClass)
+    QIPPerClass = getQIPPerClass(Words_List, frequencyPerClass, nis)
 
     docs = {}
 
-    for doc in CSV_Data:
-        print('----------------------')
-        print(doc['DOCID'])
-        docs[doc['DOCID']] = {'CLASE ORIGINAL': doc['CLASE'], 'CLASE OTORGADA': '', }
+    for doc in CSV_Data_2:
+        docs[int(doc['DOCID'])] = {'CLASE ORIGINAL': doc['CLASE'], 'CLASE OTORGADA': '', 'SIMILITUDES': {}}
 
         similarityDict = {}
 
-        for clase in Clases:
+        for clase in Clases_2:
             similarityVal = 0
-            for word in Words_List:
-                if doc['TERMINOS[termino/peso]'][word] != 0:
-                    #print(word)
-                    similarityVal += math.log((PIPPerClass[clase][word]/(1-PIPPerClass[clase][word])),10) + math.log(((1-QIPPerClass[clase][word])/QIPPerClass[clase][word]),10)
-            #print(similarityVal)
+            for word in Words_List_2:
+                if((clase in PIPPerClass.keys()) and (clase in QIPPerClass.keys())):
+                    if((word in PIPPerClass[clase].keys()) and (word in QIPPerClass[clase].keys())):
+                        similarityVal += float(doc['TERMINOS[termino/peso]'][word])*(math.log((PIPPerClass[clase][word]/(1-PIPPerClass[clase][word])),2) + math.log(((1-QIPPerClass[clase][word])/QIPPerClass[clase][word]),2))
             similarityDict[clase] = similarityVal
-        print(max(similarityDict, key=similarityDict.get))
-        docs[doc['DOCID']]['CLASE OTORGADA'] = max(similarityDict, key=similarityDict.get)
-        print(similarityDict[max(similarityDict, key=similarityDict.get)])
-    print(docs)
+        sorted_tuples = sorted(similarityDict.items(), key=lambda item: item[1])
+        sorted_tuples.reverse()
+        sorted_dict = {k: v for k, v in sorted_tuples}
+        docs[int(doc['DOCID'])]['SIMILITUDES'] = sorted_dict
+        docs[int(doc['DOCID'])]['CLASE OTORGADA'] = max(sorted_dict, key=sorted_dict.get)
+    dictionary_items = docs.items()
+    docs = dict(sorted(dictionary_items))
+    print(json.dumps(docs,sort_keys=False, indent=4))
 
         
 def main():
@@ -210,6 +213,7 @@ def main():
     prepareWeights(Words_List,CSV_Data)
     prepareWeights(Words_List_2,CSV_Data_2)
     
-    rocchioAlgorithm(Words_List)
-    
+    #rocchioAlgorithm(Words_List)
+    bayesianosIngenuosAlgorithm(Words_List, Words_List_2)
+
 main()

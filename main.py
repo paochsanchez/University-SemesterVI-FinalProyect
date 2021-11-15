@@ -41,6 +41,7 @@ def prepareWords(Words_List_WW):
     return wordList
 
 def prepareWeights(Words_List,CSV_Data_):
+    print(CSV_Data_)
     for item in CSV_Data_:
         termsList = item.get("TERMINOS[termino/peso]").split(" ")
         tuples = {}
@@ -57,7 +58,7 @@ def prepareWeights(Words_List,CSV_Data_):
 def calculateRocchioCP(clase, Words_List):
     actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
     cont = 0
-    averageCP = {}, 
+    averageCP = {} 
     for doc in actualDocs:
         cont += 1
         for word in Words_List:
@@ -97,7 +98,7 @@ def rocchioAlgorithm(W_L):
     allqCp = {}
     for clase in Clases:
         CP = calculateRocchioCP(clase, W_L)
-        notCP = calculateRocchioNotCP(clase)
+        notCP = calculateRocchioNotCP(clase, W_L)
         allqCp[clase] = calculateRocchioQCP(CP,notCP,0)
         
     for doc in CSV_Data_2:  
@@ -202,14 +203,13 @@ def main():
     
     listWWW = readCSVFile(paths[0],CSV_Data,Clases)
     listWWW_2 = readCSVFile(paths[1],CSV_Data_2,Clases_2)
-    
+
     Words_List = prepareWords(listWWW)
     Words_List_2 = prepareWords(listWWW_2)
     
-    prepareWeights(Words_List,listWWW)
-    prepareWeights(Words_List_2,listWWW_2)
+    prepareWeights(Words_List,CSV_Data)
+    prepareWeights(Words_List_2,CSV_Data_2)
     
     rocchioAlgorithm(Words_List)
-    bayesianosIngenuosAlgorithm()
     
-main(),
+main()

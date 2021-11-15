@@ -9,36 +9,39 @@ import math
 # TERMINOS[termino/peso] último campo contiene una lista con los términos y sus correspondientes pesos
 
 #Variables Globales y Constantes
+paths =['training-set.csv','test-set.csv']
 CSV_Data = []
+CSV_Data_2 = []
 Param_Rocchio = [[0.75, 0.25], [0.85, 0.15], [0.95, 0.05]]
-Words_List =[]
 Clases ={}
+Clases_2 ={}
 
-def readCSVFile():
+def readCSVFile(path,CSV_Data_,Clases_):
     Words_List_WW =[]
-    with open('test-set.csv', mode='r') as csv_file:
+    with open(path, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter='\t')
         for row in csv_reader:
-            CSV_Data.append(row)
+            CSV_Data_.append(row)
             Words_List_WW.append(row.get("TERMINOS[termino/peso]").split(" "))
-            if row.get("CLASE") not in Clases.keys():
-                Clases[row.get("CLASE")] = 1
+            if row.get("CLASE") not in Clases_.keys():
+                Clases_[row.get("CLASE")] = 1
             else:
-                Clases[row.get("CLASE")] = Clases[row.get("CLASE")]+1
-          
-    CSV_Data.sort(key=lambda k: k['CLASE'])
+                Clases_[row.get("CLASE")] = Clases_[row.get("CLASE")]+1
+    CSV_Data_.sort(key=lambda k: k['CLASE'])
     return Words_List_WW
 
 def prepareWords(Words_List_WW):
+    wordList =[]
     for list in Words_List_WW:
         for item in list:
             tuple = item.split("/")
-            if tuple[0] not in Words_List:
-                Words_List.append(tuple[0])
-    Words_List.sort()
+            if tuple[0] not in wordList:
+                wordList.append(tuple[0])
+    wordList.sort()
+    return wordList
 
-def prepareWeights():
-    for item in CSV_Data:
+def prepareWeights(Words_List,CSV_Data_):
+    for item in CSV_Data_:
         termsList = item.get("TERMINOS[termino/peso]").split(" ")
         tuples = {}
         for term in termsList:            
@@ -51,10 +54,10 @@ def prepareWeights():
 
             
             
-def calculateRocchioCP(clase):
+def calculateRocchioCP(clase, Words_List):
     actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
     cont = 0
-    averageCP = {}
+    averageCP = {}, 
     for doc in actualDocs:
         cont += 1
         for word in Words_List:
@@ -66,7 +69,7 @@ def calculateRocchioCP(clase):
                 averageCP[word] = averageCP[word]/int(Clases[clase]) if averageCP[word]!=0 else 0
     return averageCP             
         
-def calculateRocchioNotCP(clase):
+def calculateRocchioNotCP(clase, Words_List):
     actualDocs = [item for item in CSV_Data if item["CLASE"] != clase]
     total = len(CSV_Data) - Clases[clase]
     cont = 0
@@ -90,14 +93,14 @@ def calculateRocchioQCP(CP,notCP,param):
         qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
     return qCP
 
-def rocchioAlgorithm():
+def rocchioAlgorithm(W_L):
     allqCp = {}
     for clase in Clases:
-        CP = calculateRocchioCP(clase)
+        CP = calculateRocchioCP(clase, W_L)
         notCP = calculateRocchioNotCP(clase)
         allqCp[clase] = calculateRocchioQCP(CP,notCP,0)
         
-    for doc in CSV_Data:  
+    for doc in CSV_Data_2:  
         print("********************")  
         print(doc["DOCID"])  
         valDoc={}
@@ -196,10 +199,17 @@ def bayesianosIngenuosAlgorithm():
 
         
 def main():
-    listWordsWithWeight = readCSVFile()
-    prepareWords(listWordsWithWeight)
-    prepareWeights()
-    rocchioAlgorithm()
+    
+    listWWW = readCSVFile(paths[0],CSV_Data,Clases)
+    listWWW_2 = readCSVFile(paths[1],CSV_Data_2,Clases_2)
+    
+    Words_List = prepareWords(listWWW)
+    Words_List_2 = prepareWords(listWWW_2)
+    
+    prepareWeights(Words_List,listWWW)
+    prepareWeights(Words_List_2,listWWW_2)
+    
+    rocchioAlgorithm(Words_List)
     bayesianosIngenuosAlgorithm()
     
-main()
+main(),

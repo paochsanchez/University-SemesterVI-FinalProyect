@@ -123,6 +123,8 @@ def rocchioAlgorithm2(allqCp,CSV_Data_2):
         docs[id] = valDoc
         print(id+"\t"+doc["CLASE"]+"\t"+valDoc["CLASE OTORGADA"])    
     print(" ")
+    dictionary_items = docs.items()
+    docs = dict(sorted(dictionary_items))
     return docs
 
 

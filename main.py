@@ -10,11 +10,7 @@ import ast
 
 # ------- Variables Globales y Constantes ------- 
 
-CSV_Data = []
-CSV_Data_2 = []
 Param_Rocchio = [[0.75, 0.25], [0.85, 0.15], [0.95, 0.05]]
-Clases ={}
-Clases_2 ={}
 
 # ------- Base -------      
         
@@ -58,7 +54,7 @@ def prepareWeights(Words_List,CSV_Data_):
 # ------- Rocchio -------      
                     
             
-def calculateRocchioCP(clase, Words_List):
+def calculateRocchioCP(clase, Words_List,CSV_Data,Clases):
     actualDocs = [item for item in CSV_Data if item["CLASE"] == clase]
     cont = 0
     averageCP = {} 
@@ -73,7 +69,7 @@ def calculateRocchioCP(clase, Words_List):
                 averageCP[word] = averageCP[word]/int(Clases[clase]) if averageCP[word]!=0 else 0
     return averageCP             
         
-def calculateRocchioNotCP(clase, Words_List):
+def calculateRocchioNotCP(clase, Words_List,CSV_Data,Clases):
     actualDocs = [item for item in CSV_Data if item["CLASE"] != clase]
     total = len(CSV_Data) - Clases[clase]
     cont = 0
@@ -97,11 +93,11 @@ def calculateRocchioQCP(CP,notCP,param):
         qCP[value] = qCP[value] - ( Param_Rocchio[param][1]*float(notCP[value]))
     return qCP
 
-def rocchioAlgorithm(W_L, param):
+def rocchioAlgorithm(W_L, param,Clases,csv):
     allqCp = {}
     for clase in Clases:
-        CP = calculateRocchioCP(clase, W_L)
-        notCP = calculateRocchioNotCP(clase, W_L)
+        CP = calculateRocchioCP(clase, W_L,csv,Clases)
+        notCP = calculateRocchioNotCP(clase, W_L,csv,Clases)
         allqCp[clase] = calculateRocchioQCP(CP,notCP,param)
     return allqCp
 
@@ -126,18 +122,16 @@ def rocchioAlgorithm2(allqCp,CSV_Data_2):
         valDoc["CLASE OTORGADA"] = max(valDoc["SIMILITUDES"], key=lambda key: valDoc["SIMILITUDES"][key])
         docs[id] = valDoc
         print(id+"\t"+doc["CLASE"]+"\t"+valDoc["CLASE OTORGADA"])    
-    res = json.dumps(docs,sort_keys=False, indent=4)
-    new_file= open("Rocchio.txt",mode="w")
-    new_file.write(res)
-    new_file.close()
     print(" ")
+    dictionary_items = docs.items()
+    docs = dict(sorted(dictionary_items))
     return docs
 
 
 
 # ------- Bayesianos Ingenuos -------
 
-def createDictionaryPerClass(Words_List):
+def createDictionaryPerClass(Words_List,Clases):
     frequencyPerClass = {}
     for clase in Clases:
         frequencyPerClass[clase] = {}
@@ -145,8 +139,8 @@ def createDictionaryPerClass(Words_List):
             frequencyPerClass[clase][word] = 0
     return frequencyPerClass
 
-def getFrequenciesPerClass(Words_List):
-    frequencyPerClass = createDictionaryPerClass(Words_List)
+def getFrequenciesPerClass(Words_List,Clases,CSV_Data):
+    frequencyPerClass = createDictionaryPerClass(Words_List,Clases)
 
     for clase in Clases:
         for doc in CSV_Data:
@@ -159,7 +153,7 @@ def getFrequenciesPerClass(Words_List):
     #print(frequencyPerClass)
     return frequencyPerClass
 
-def calculateNis(Words_List, frequencyPerClass):
+def calculateNis(Words_List, frequencyPerClass,Clases):
     #Sumar apariciones de cada palabra en frequencyPerClass
     nis = {}
     for word in Words_List:
@@ -172,8 +166,8 @@ def calculateNis(Words_List, frequencyPerClass):
     #print(nis)
     return nis
 
-def getPIPPerClass(Words_List, frequencyPerClass):
-    PIPPerClass = createDictionaryPerClass(Words_List)
+def getPIPPerClass(Words_List, frequencyPerClass,Clases):
+    PIPPerClass = createDictionaryPerClass(Words_List,Clases)
 
     for clase in Clases:
         for word in Words_List:
@@ -181,8 +175,8 @@ def getPIPPerClass(Words_List, frequencyPerClass):
 
     return PIPPerClass
 
-def getQIPPerClass(Words_List, frequencyPerClass, nis):
-    QIPPerClass = createDictionaryPerClass(Words_List)
+def getQIPPerClass(Words_List, frequencyPerClass, nis,Clases):
+    QIPPerClass = createDictionaryPerClass(Words_List,Clases)
     N = 0 
     for clase in Clases: N += Clases[clase]
 
@@ -192,11 +186,11 @@ def getQIPPerClass(Words_List, frequencyPerClass, nis):
 
     return QIPPerClass
 
-def bayesianosIngenuosAlgorithm(Words_List):
-    frequencyPerClass = getFrequenciesPerClass(Words_List)
-    nis = calculateNis(Words_List, frequencyPerClass)
-    PIPPerClass = getPIPPerClass(Words_List, frequencyPerClass)
-    QIPPerClass = getQIPPerClass(Words_List, frequencyPerClass, nis)
+def bayesianosIngenuosAlgorithm(Words_List,Clases,CSV):
+    frequencyPerClass = getFrequenciesPerClass(Words_List,Clases,CSV)
+    nis = calculateNis(Words_List, frequencyPerClass,Clases)
+    PIPPerClass = getPIPPerClass(Words_List, frequencyPerClass,Clases)
+    QIPPerClass = getQIPPerClass(Words_List, frequencyPerClass, nis,Clases)
     return [PIPPerClass,QIPPerClass]
 
 def bayesianosIngenuosAlgorithm2(PIPPerClass, QIPPerClass, Words_List_2, CSV_Data_2, Clases_2):
@@ -240,6 +234,7 @@ def doEvaluation(clasificatorRes, Clases_2):
     for clase in Clases_2: g_N += Clases_2[clase]
 
     for clase in Clases_2:
+        data={}
         c_numDocsInClassBySet = Clases_2[clase]
         a_numDocsInClassWellAssigned = 0
         f_numDocsInClassAssigned = 0
@@ -255,12 +250,41 @@ def doEvaluation(clasificatorRes, Clases_2):
         e_numDocsNotInClassAndNotAssigned = numCassesBadAssigned-b_numDocsInClassBadAssigned
         numDocsNotAssignedToClass = d_numDocsNotInClassButAssigned+e_numDocsNotInClassAndNotAssigned
         
+        data["Clase"] = clase
+        data["a"] = a_numDocsInClassWellAssigned
+        data["b"] = b_numDocsInClassBadAssigned
+        data["c"] = c_numDocsInClassBySet
+        data["d"] = d_numDocsNotInClassButAssigned
+        data["e"] = e_numDocsNotInClassAndNotAssigned
+        data["f"] = f_numDocsInClassAssigned
+        data["g"] = g_N
+        data["h"] = numCassesBadAssigned
+        data["i"] = numDocsNotAssignedToClass
+        
         precision=(a_numDocsInClassWellAssigned/f_numDocsInClassAssigned)
         recall=(a_numDocsInClassWellAssigned/c_numDocsInClassBySet)
         sucess=((a_numDocsInClassWellAssigned+e_numDocsNotInClassAndNotAssigned)/g_N)
         error=((b_numDocsInClassBadAssigned+d_numDocsNotInClassButAssigned)/g_N)
-
-        print("Clase: " + clase)
+        
+        
+        #ini= "Evaluación clase "+clase+"!"+"Documentos que realmente pertenecen a la clase "+clase+"!"+"Documentos que realmente no pertenecen a la clase "+clase+"!"+" "
+        #row_2 = "Documentos que el clasif. dice pertenecen a la clase "+clase+"!"+str(data["a"])+"!"+str(data["d"])+"!"+str(data["f"])
+        #row_3 = "Documentos que el clasif. dice no pertenecen a la clase "+clase+"!"+str(data["b"])+"!"+str(data["e"])+"!"+str(data["i"])
+        #row_4 = " "+"!"+str(data["c"])+"!"+str(data["h"])+"!"+str(data["g"])
+        
+        #print(ini)
+        #print(row_2)
+        #print(row_3)
+        #print(row_4)
+        
+        data["Metricas"] ={"Precision":precision,"Recall":recall,"Sucess":sucess,"Error":error}
+        
+        res = json.dumps(data,sort_keys=False, indent=4)
+        new_file= open("Evaluation.txt",mode="a")
+        new_file.write(res)
+        new_file.close()
+    
+        print("Evaluación Clase: " + clase)
         print("Precision: " + str(precision))
         print("Recall: " + str(recall))
         print("Sucess: " + str(sucess))
@@ -284,32 +308,43 @@ def main():
         print("Ingrese la dirección de los datos: ")
         path = input()
         
-        print("El algoritmo Rocchio posee tres pares de párametos:")
-        print("1. (Beta = 0.75, Gama=0.25)")
-        print("2. (Beta = 0.85, Gama=0.15)")
-        print("3. (Beta = 0.95, Gama=0.05)")
-        print("Seleccione un parámetro: ")
-        choiceParam = input()
-        if(choice!="1" and choice!="2" and choice!="3"): 
-            print("El valor ingresado no es válido")
-            print("Se pondrá por defecto el valor 1")
-            choice==1
+        
+        CSV_Data = []
+        Clases = {}
         listWWW = readCSVFile(path,CSV_Data,Clases)
         Words_List = prepareWords(listWWW)
         prepareWeights(Words_List,CSV_Data)
         
-        res = rocchioAlgorithm(Words_List,int(choiceParam)-1)
-        new_file= open("Training-Rocchio.txt",mode="w")
+                
+        print("El algoritmo Rocchio posee tres pares de párametos:")
+        print("1. (Beta = 0.75, Gama=0.25)")
+        res = rocchioAlgorithm(Words_List,int(1)-1,Clases,CSV_Data)
+        new_file= open("Training-Rocchio-1.txt",mode="w")
         new_file.write(str(res))
         new_file.close()
         
-        res = bayesianosIngenuosAlgorithm(Words_List)
+        print("2. (Beta = 0.85, Gama=0.15)")
+        res = rocchioAlgorithm(Words_List,int(2)-1,Clases,CSV_Data)
+        new_file= open("Training-Rocchio-2.txt",mode="w")
+        new_file.write(str(res))
+        new_file.close()
+        
+        print("3. (Beta = 0.95, Gama=0.05)")
+        res = rocchioAlgorithm(Words_List,int(3)-1,Clases,CSV_Data)
+        new_file= open("Training-Rocchio-3.txt",mode="w")
+        new_file.write(str(res))
+        new_file.close()
+        
+        res = bayesianosIngenuosAlgorithm(Words_List,Clases,CSV_Data)
         new_file= open("Training-BI.txt",mode="w")
         new_file.write(str(res))
         new_file.close()
         print("")
-    elif(choice=="2"):
         
+    elif(choice=="2"):
+        new_file= open("Evaluation.txt",mode="w")
+        new_file.write("")
+        new_file.close()
         print("Ingrese la dirección de los datos: ")
         path = input()
         
@@ -320,12 +355,50 @@ def main():
         Words_List_2 = prepareWords(listWWW_2)
         prepareWeights(Words_List_2,CSV_Data_2)
 
-        new_file= open("Training-Rocchio.txt",mode="r")
+        new_file= open("Training-Rocchio-1.txt",mode="r")
         text = new_file.read()
         res = ast.literal_eval(text)
-
         resRocchio = rocchioAlgorithm2(res,CSV_Data_2)
-        print("------ Rocchio Evaluation ------")
+        res = json.dumps(resRocchio,sort_keys=False, indent=4)
+        new_file= open("Rocchio-1.txt",mode="w")
+        new_file.write(res)
+        new_file.close()
+        print("------ Rocchio Evaluation 1------")
+        new_file= open("Evaluation.txt",mode="a")
+        new_file.write("------ Rocchio Evaluation 1------")
+        new_file.close()
+        doEvaluation(resRocchio, Clases_2)
+        print(" ")
+        
+        
+        new_file= open("Training-Rocchio-2.txt",mode="r")
+        text = new_file.read()
+        res = ast.literal_eval(text)
+        resRocchio = rocchioAlgorithm2(res,CSV_Data_2)
+        res = json.dumps(resRocchio,sort_keys=False, indent=4)
+        new_file= open("Rocchio-2.txt",mode="w")
+        new_file.write(res)
+        new_file.close()
+        print("------ Rocchio Evaluation 2------")
+        new_file= open("Evaluation.txt",mode="a")
+        new_file.write("------ Rocchio Evaluation 2------")
+        new_file.close()
+        doEvaluation(resRocchio, Clases_2)
+        print(" ")
+        
+        
+        new_file= open("Training-Rocchio-3.txt",mode="r")
+        text = new_file.read()
+        res = ast.literal_eval(text)
+        resRocchio = rocchioAlgorithm2(res,CSV_Data_2)
+        res = json.dumps(resRocchio,sort_keys=False, indent=4)
+        new_file= open("Rocchio-3.txt",mode="w")
+        new_file.write(res)
+        new_file.close()
+        print("------ Rocchio Evaluation 3------")
+        new_file= open("Evaluation.txt",mode="a")
+        new_file.write("------ Rocchio Evaluation 3------")
+        new_file.close()
         doEvaluation(resRocchio, Clases_2)
         print(" ")
         
@@ -335,6 +408,9 @@ def main():
         
         resBayesianos = bayesianosIngenuosAlgorithm2(res[0],res[1],Words_List_2, CSV_Data_2, Clases_2)
         print("------ Byesianos Ingenuos Evaluation ------")
+        new_file= open("Evaluation.txt",mode="a")
+        new_file.write("------ Byesianos Ingenuos Evaluation  ------")
+        new_file.close()
         doEvaluation(resBayesianos, Clases_2)
         print(" ")
 

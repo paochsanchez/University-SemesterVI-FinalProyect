@@ -1,10 +1,7 @@
-#Aquí iría nuestro proyecto
-#SI HUBIERA UNO :(
 import csv
 import math
 import json
 import ast
-from collections import OrderedDict
 
 # DOCID es el identificador del documento
 # CLASE es la clase a la que pertenece el documento
@@ -113,26 +110,32 @@ def rocchioAlgorithm2(allqCp,CSV_Data_2):
     docs = {}   
     for doc in CSV_Data_2:  
         valDoc={}
-        valDoc["Clase Real"] = doc["CLASE"]
-        valDoc["Clase Asignada Rocchio"] = 0
-        valDoc["Similitudes"] = {}
+        valDoc["CLASE ORIGINAL"] = doc["CLASE"]
+        valDoc["CLASE OTORGADA"] = 0
+        valDoc["SIMILITUDES"] = {}
         id = doc["DOCID"]
         for cp in allqCp:
             sumMult = 0
             for value in allqCp[cp]:
                 sumMult += float(doc["TERMINOS[termino/peso]"].get(value, 0)) *float(allqCp[cp][value])
-            valDoc["Similitudes"][cp] = sumMult
-        valDoc["Clase Asignada Rocchio"] = max(valDoc["Similitudes"], key=lambda key: valDoc["Similitudes"][key])
+            valDoc["SIMILITUDES"][cp] = sumMult
+        sorted_tuples = sorted(valDoc["SIMILITUDES"].items(), key=lambda item: item[1])
+        sorted_tuples.reverse()
+        sorted_dict = {k: v for k, v in sorted_tuples}
+        valDoc["SIMILITUDES"] = sorted_dict
+        valDoc["CLASE OTORGADA"] = max(valDoc["SIMILITUDES"], key=lambda key: valDoc["SIMILITUDES"][key])
         docs[id] = valDoc
-        print(id+"\t"+doc["CLASE"]+"\t"+valDoc["Clase Asignada Rocchio"])    
+        print(id+"\t"+doc["CLASE"]+"\t"+valDoc["CLASE OTORGADA"])    
     res = json.dumps(docs,sort_keys=False, indent=4)
     new_file= open("Rocchio.txt",mode="w")
     new_file.write(res)
     new_file.close()
-    print("")    
+    print(" ")
+    return docs
+
+
 
 # ------- Bayesianos Ingenuos -------
-
 
 def createDictionaryPerClass(Words_List):
     frequencyPerClass = {}
@@ -226,9 +229,47 @@ def bayesianosIngenuosAlgorithm2(PIPPerClass, QIPPerClass, Words_List_2, CSV_Dat
     new_file= open("BayesianosIngenuos.txt",mode="w")
     new_file.write(res)
     new_file.close()
+    print(" ")
+    return docs
+
+
+# ------- evaluation -------
+
+def doEvaluation(clasificatorRes, Clases_2):
+    g_N = 0 
+    for clase in Clases_2: g_N += Clases_2[clase]
+
+    for clase in Clases_2:
+        c_numDocsInClassBySet = Clases_2[clase]
+        a_numDocsInClassWellAssigned = 0
+        f_numDocsInClassAssigned = 0
+        for doc in clasificatorRes:
+            if clase == clasificatorRes[doc]["CLASE OTORGADA"]:
+                if clasificatorRes[doc]["CLASE OTORGADA"] == clasificatorRes[doc]["CLASE ORIGINAL"]:
+                    a_numDocsInClassWellAssigned+=1
+                f_numDocsInClassAssigned+=1
+    
+        b_numDocsInClassBadAssigned = c_numDocsInClassBySet-a_numDocsInClassWellAssigned
+        d_numDocsNotInClassButAssigned = f_numDocsInClassAssigned-a_numDocsInClassWellAssigned
+        numCassesBadAssigned = g_N-f_numDocsInClassAssigned
+        e_numDocsNotInClassAndNotAssigned = numCassesBadAssigned-b_numDocsInClassBadAssigned
+        numDocsNotAssignedToClass = d_numDocsNotInClassButAssigned+e_numDocsNotInClassAndNotAssigned
+        
+        precision=(a_numDocsInClassWellAssigned/f_numDocsInClassAssigned)
+        recall=(a_numDocsInClassWellAssigned/c_numDocsInClassBySet)
+        sucess=((a_numDocsInClassWellAssigned+e_numDocsNotInClassAndNotAssigned)/g_N)
+        error=((b_numDocsInClassBadAssigned+d_numDocsNotInClassButAssigned)/g_N)
+
+        print("Clase: " + clase)
+        print("Precision: " + str(precision))
+        print("Recall: " + str(recall))
+        print("Sucess: " + str(sucess))
+        print("Error: " + str(error))
+        print("------------------")
+        
+
+
 # ------- main -------      
-        
-        
 def main():
     print("Proyecto Final - RIT")
     print("--------------------")
@@ -283,13 +324,20 @@ def main():
         text = new_file.read()
         res = ast.literal_eval(text)
 
-        rocchioAlgorithm2(res,CSV_Data_2)
+        resRocchio = rocchioAlgorithm2(res,CSV_Data_2)
+        print("------ Rocchio Evaluation ------")
+        doEvaluation(resRocchio, Clases_2)
+        print(" ")
         
         new_file= open("Training-BI.txt",mode="r")
         text = new_file.read()
         res = ast.literal_eval(text)
         
-        bayesianosIngenuosAlgorithm2(res[0],res[1],Words_List_2, CSV_Data_2, Clases_2)
+        resBayesianos = bayesianosIngenuosAlgorithm2(res[0],res[1],Words_List_2, CSV_Data_2, Clases_2)
+        print("------ Byesianos Ingenuos Evaluation ------")
+        doEvaluation(resBayesianos, Clases_2)
+        print(" ")
+
     elif(choice=="3"):
         return   
     else:

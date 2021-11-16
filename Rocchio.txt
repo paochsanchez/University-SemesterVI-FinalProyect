@@ -1,343 +1,343 @@
 {
     "18": {
-        "Clase Real": "coffee",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.007438055321488279,
-            "trade": 0.011953233094796175,
-            "coffee": 0.06297760795419,
-            "grain": 0.017253508232523543,
-            "crude": 0.011061525392637758
+        "CLASE ORIGINAL": "coffee",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.05314743017871666,
+            "grain": 0.011758851873000771,
+            "trade": 0.00698967472954918,
+            "crude": 0.0062383302437851555,
+            "money-fx": 0.0029203271785830276
         }
     },
     "118": {
-        "Clase Real": "coffee",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.00952398076178938,
-            "trade": 0.01586465671374284,
-            "coffee": 0.09876011968866726,
-            "grain": 0.008211630250625539,
-            "crude": 0.009229210322939585
+        "CLASE ORIGINAL": "coffee",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.08494307734084545,
+            "trade": 0.010027643962149177,
+            "money-fx": 0.004291100171033578,
+            "crude": 0.004054888923343749,
+            "grain": 0.0025540250441707713
         }
     },
     "444": {
-        "Clase Real": "coffee",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.013185908314249999,
-            "trade": 0.0222227418960595,
-            "coffee": 0.10304310940325405,
-            "grain": 0.016754587385527153,
-            "crude": 0.01482006411962005
+        "CLASE ORIGINAL": "coffee",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.08763974060695684,
+            "trade": 0.014599502658899179,
+            "grain": 0.009202784805058081,
+            "crude": 0.007929370820144529,
+            "money-fx": 0.006408932249749999
         }
     },
     "479": {
-        "Clase Real": "coffee",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.001030071739487546,
-            "trade": 0.01142367819684164,
-            "coffee": 0.07041608095742907,
-            "grain": 0.011425941163673231,
-            "crude": 0.0010399214731192706
+        "CLASE ORIGINAL": "coffee",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.06057060001924847,
+            "trade": 0.0072588248071360694,
+            "grain": 0.007111460399224617,
+            "crude": -0.0021304920560234375,
+            "money-fx": -0.0021756941591617833
         }
     },
     "170": {
-        "Clase Real": "crude",
-        "Clase Asignada Rocchio": "crude",
-        "Similitudes": {
-            "money-fx": 0.02772146498060148,
-            "trade": 0.024055514594746762,
-            "coffee": 0.04330282640056728,
-            "grain": 0.014774521048070142,
-            "crude": 0.07941868899052833
+        "CLASE ORIGINAL": "crude",
+        "CLASE OTORGADA": "crude",
+        "SIMILITUDES": {
+            "crude": 0.06566648069326955,
+            "coffee": 0.03284461891101211,
+            "money-fx": 0.018739406449822953,
+            "trade": 0.015357690367555741,
+            "grain": 0.006253922468963079
         }
     },
     "192": {
-        "Clase Real": "crude",
-        "Clase Asignada Rocchio": "crude",
-        "Similitudes": {
-            "money-fx": 0.006312620205291758,
-            "trade": 0.008851598291243002,
-            "coffee": 0.014135691042917727,
-            "grain": 0.0026567110727336147,
-            "crude": 0.09076160148420596
+        "CLASE ORIGINAL": "crude",
+        "CLASE OTORGADA": "crude",
+        "SIMILITUDES": {
+            "crude": 0.07844679243412109,
+            "coffee": 0.008939652662062878,
+            "trade": 0.004029984741582786,
+            "money-fx": 0.0017775744048708793,
+            "grain": -0.002224927881392693
         }
     },
     "463": {
-        "Clase Real": "crude",
-        "Clase Asignada Rocchio": "crude",
-        "Similitudes": {
-            "money-fx": 0.012211282705595605,
-            "trade": 0.0020919915514479776,
-            "coffee": 0.013936337203499093,
-            "grain": 0.011559651943281693,
-            "crude": 0.03775107061277318
+        "CLASE ORIGINAL": "crude",
+        "CLASE OTORGADA": "crude",
+        "SIMILITUDES": {
+            "crude": 0.03149043145556641,
+            "coffee": 0.00988102745023182,
+            "money-fx": 0.008308602219531136,
+            "grain": 0.007609533018443846,
+            "trade": -0.0009609754464311478
         }
     },
     "498": {
-        "Clase Real": "crude",
-        "Clase Asignada Rocchio": "crude",
-        "Similitudes": {
-            "money-fx": 0.00915249050265348,
-            "trade": 0.010061052414359234,
-            "coffee": 0.018557162234992736,
-            "grain": 0.006959937892219692,
-            "crude": 0.03533431624183255
+        "CLASE ORIGINAL": "crude",
+        "CLASE OTORGADA": "crude",
+        "SIMILITUDES": {
+            "crude": 0.029341269122332033,
+            "coffee": 0.01409551445418788,
+            "trade": 0.006376179128509836,
+            "money-fx": 0.005569909310371185,
+            "grain": 0.0033010013706738462
         }
     },
     "519": {
-        "Clase Real": "crude",
-        "Clase Asignada Rocchio": "crude",
-        "Similitudes": {
-            "money-fx": 0.015223276385523449,
-            "trade": 0.00946517083244295,
-            "coffee": 0.02781200574177091,
-            "grain": 0.01156632409313661,
-            "crude": 0.05368717656827865
+        "CLASE ORIGINAL": "crude",
+        "CLASE OTORGADA": "crude",
+        "SIMILITUDES": {
+            "crude": 0.0447080721912422,
+            "coffee": 0.02119395747808485,
+            "money-fx": 0.009789605579000606,
+            "grain": 0.006109179143612305,
+            "trade": 0.004493042668604917
         }
     },
     "142": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.014532783775651646,
-            "trade": 0.019834894142131472,
-            "coffee": 0.01915091359301546,
-            "grain": 0.06240748425248846,
-            "crude": 0.005281716920486977
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.052033724678019234,
+            "trade": 0.012019644694752458,
+            "coffee": 0.011532691402559086,
+            "money-fx": 0.007249389164342489,
+            "crude": -0.0011067067456328123
         }
     },
     "152": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.004873795801840111,
-            "trade": 0.007265985094038743,
-            "coffee": 0.009626462286929547,
-            "grain": 0.033205610661631926,
-            "crude": 0.001698365940957291
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.02801550126846346,
+            "coffee": 0.005893201886549242,
+            "trade": 0.003669845691309016,
+            "money-fx": 0.0015315149141950557,
+            "crude": -0.0013258175670156254
         }
     },
     "208": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.025151336247173264,
-            "trade": 0.011313774600408305,
-            "coffee": 0.033960106341941805,
-            "grain": 0.05124185639368739,
-            "crude": 0.013363657994060677
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.0415011428394277,
+            "coffee": 0.024946820767503035,
+            "money-fx": 0.01695772661098108,
+            "crude": 0.006273272315378907,
+            "trade": 0.0042706689306360665
         }
     },
     "219": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.019204093987279673,
-            "trade": 0.02178957062017776,
-            "coffee": 0.029670775542633178,
-            "grain": 0.05992437377426299,
-            "crude": 0.014186135687757551
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.048921311934105004,
+            "coffee": 0.020419388123121964,
+            "trade": 0.013158228713007368,
+            "money-fx": 0.010866363496081503,
+            "crude": 0.006348209034707033
         }
     },
     "226": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.015260314913381869,
-            "trade": 0.024592229558553058,
-            "coffee": 0.021766208746772278,
-            "grain": 0.03634767279278531,
-            "crude": 0.011282184707748177
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.028775698285001147,
+            "trade": 0.017619411473010656,
+            "coffee": 0.015064889798153782,
+            "money-fx": 0.009126859471482599,
+            "crude": 0.005538900669691403
         }
     },
     "322": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.009359970384085353,
-            "trade": 0.029309867991995413,
-            "coffee": 0.02050608179177091,
-            "grain": 0.04658688975588124,
-            "crude": 0.00797821880742552
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.03787831395590462,
+            "trade": 0.02141532502585901,
+            "coffee": 0.013438313740751516,
+            "money-fx": 0.0032506148232704507,
+            "crude": 0.0020394978198203114
         }
     },
     "343": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.015163949202587545,
-            "trade": 0.017106606122976174,
-            "coffee": 0.01515410166107637,
-            "grain": 0.04871592896237539,
-            "crude": 0.014218253090171091
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.039999723885907695,
+            "trade": 0.010337584418649182,
+            "coffee": 0.008689229172527279,
+            "money-fx": 0.008617400877338215,
+            "crude": 0.007786783301785156
         }
     },
     "424": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.013398667060776736,
-            "trade": 0.026801140275922463,
-            "coffee": 0.025084185523206813,
-            "grain": 0.035169437239441624,
-            "crude": 0.0069770868519125
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.02777962359478731,
+            "trade": 0.019744468390404096,
+            "coffee": 0.01815793304634469,
+            "money-fx": 0.007534269960935592,
+            "crude": 0.0017322193186874995
         }
     },
     "445": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.0015198808827699632,
-            "trade": 0.00820988684617836,
-            "coffee": 0.012665334746522728,
-            "grain": 0.027251255063923223,
-            "crude": 0.012000248642215626
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.022437421083974608,
+            "coffee": 0.008691641012204546,
+            "crude": 0.008079249043359375,
+            "trade": 0.004592061263763933,
+            "money-fx": -0.001463151350203907
         }
     },
     "477": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.009823324604168128,
-            "trade": 0.01575823084099399,
-            "coffee": 0.006823996327526365,
-            "grain": 0.058066706564470924,
-            "crude": 0.008216218543348176
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.04891402531752847,
+            "trade": 0.009144327403434427,
+            "money-fx": 0.0037973617731007323,
+            "crude": 0.002379053943191407,
+            "coffee": 0.001207005120277274
         }
     },
     "482": {
-        "Clase Real": "grain",
-        "Clase Asignada Rocchio": "grain",
-        "Similitudes": {
-            "money-fx": 0.01700549428969286,
-            "trade": 0.006426005099633608,
-            "coffee": 0.01775327528248136,
-            "grain": 0.026750944955784683,
-            "crude": 0.010191127423913803
+        "CLASE ORIGINAL": "grain",
+        "CLASE OTORGADA": "grain",
+        "SIMILITUDES": {
+            "grain": 0.021361794944948845,
+            "coffee": 0.012800625383335606,
+            "money-fx": 0.012124741784154763,
+            "crude": 0.00594116024930078,
+            "trade": 0.0024442321593893456
         }
     },
     "52": {
-        "Clase Real": "money-fx",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.03822586175710623,
-            "trade": 0.03413384315983355,
-            "coffee": 0.027076789603620907,
-            "grain": 0.01182811385829369,
-            "crude": 0.014244717761690888
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.030220328971330895,
+            "trade": 0.026551709345411473,
+            "coffee": 0.020048876711168194,
+            "crude": 0.008421758808207032,
+            "grain": 0.005759897606463847
         }
     },
     "68": {
-        "Clase Real": "money-fx",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.0767308053009765,
-            "trade": 0.012139214701651588,
-            "coffee": 0.023237027199787267,
-            "grain": 0.008745818056497538,
-            "crude": 0.010656375484392445
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.06521756391783272,
+            "coffee": 0.01654504416891212,
+            "trade": 0.006387435443108197,
+            "crude": 0.00512712241004297,
+            "grain": 0.00279062767729077
         }
     },
     "235": {
-        "Clase Real": "money-fx",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.04841505320851394,
-            "trade": 0.019956879078540102,
-            "coffee": 0.026845892494551833,
-            "grain": 0.011595315545781694,
-            "crude": 0.013626680294898436
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.039738452451318074,
+            "coffee": 0.020078304405119703,
+            "trade": 0.013833446181255735,
+            "crude": 0.008104708524164062,
+            "grain": 0.0058344355179438465
         }
     },
     "273": {
-        "Clase Real": "money-fx",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.01987953721570476,
-            "trade": 0.009625933794740109,
-            "coffee": 0.010934487345234545,
-            "grain": 0.010235524620151691,
-            "crude": 0.012218395222487759
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.01570081690884127,
+            "crude": 0.008729837462535158,
+            "coffee": 0.007570695329857576,
+            "grain": 0.006850038627893846,
+            "trade": 0.006357900774255738
         }
     },
     "496": {
-        "Clase Real": "money-fx",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.17409802117164874,
-            "trade": 0.010719316164519238,
-            "coffee": 0.016188943913665457,
-            "grain": 0.008445264105740308,
-            "crude": 0.01146413359535026
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.15073442489136324,
+            "coffee": 0.007215895760642424,
+            "crude": 0.002819952413972656,
+            "trade": 0.0019300676977098358,
+            "grain": -0.0011766781690738459
         }
     },
     "111": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "trade",
-        "Similitudes": {
-            "money-fx": 0.016023236392316485,
-            "trade": 0.06078978645432262,
-            "coffee": 0.03340184229933274,
-            "grain": 0.014263397390671688,
-            "crude": 0.010300476482107815
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "trade",
+        "SIMILITUDES": {
+            "trade": 0.050444236723337685,
+            "coffee": 0.025292266958487884,
+            "money-fx": 0.009533553424424907,
+            "grain": 0.007489833242093848,
+            "crude": 0.004364111705179688
         }
     },
     "121": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.02986844416137583,
-            "trade": 0.02316765386971334,
-            "coffee": 0.03633534958843181,
-            "grain": 0.01789219775728754,
-            "crude": 0.012408178898860157
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.028536007093053022,
+            "money-fx": 0.02274941009208792,
+            "trade": 0.01665498514810001,
+            "grain": 0.011670097656940765,
+            "crude": 0.006887063234933592
         }
     },
     "260": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "coffee",
-        "Similitudes": {
-            "money-fx": 0.022897184106673817,
-            "trade": 0.04542235710643515,
-            "coffee": 0.04560948410399043,
-            "grain": 0.017541436512315774,
-            "crude": 0.016023232580186196
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "trade",
+        "SIMILITUDES": {
+            "trade": 0.03602508925276967,
+            "coffee": 0.035976455298850754,
+            "money-fx": 0.015438890976456345,
+            "grain": 0.010180471085090388,
+            "crude": 0.009212375683199221
         }
     },
     "354": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "trade",
-        "Similitudes": {
-            "money-fx": 0.021267733220709344,
-            "trade": 0.04723569457965556,
-            "coffee": 0.029736242263945906,
-            "grain": 0.014696877020289458,
-            "crude": 0.004609445214203125
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "trade",
+        "SIMILITUDES": {
+            "trade": 0.038656615804492624,
+            "coffee": 0.02255973317804319,
+            "money-fx": 0.014904082179746338,
+            "grain": 0.008616780651354232,
+            "crude": -0.00020929289582812525
         }
     },
     "365": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "trade",
-        "Similitudes": {
-            "money-fx": 0.019222248659987357,
-            "trade": 0.0668800158693219,
-            "coffee": 0.034296442317194996,
-            "grain": 0.015151508145060229,
-            "crude": 0.010940095433097397
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "trade",
+        "SIMILITUDES": {
+            "trade": 0.05555736661362542,
+            "coffee": 0.025668537304858335,
+            "money-fx": 0.011996690190902024,
+            "grain": 0.007796532470869614,
+            "crude": 0.004502448671773439
         }
     },
     "506": {
-        "Clase Real": "trade",
-        "Clase Asignada Rocchio": "money-fx",
-        "Similitudes": {
-            "money-fx": 0.04317553036707143,
-            "trade": 0.035513138038160426,
-            "coffee": 0.016918921060675454,
-            "grain": 0.012064265422176767,
-            "crude": 0.026076743585246098
+        "CLASE ORIGINAL": "trade",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.034382051709119045,
+            "trade": 0.02746284508702294,
+            "crude": 0.01882123681791016,
+            "coffee": 0.010549018775592422,
+            "grain": 0.005574725536525385
         }
     }
 }

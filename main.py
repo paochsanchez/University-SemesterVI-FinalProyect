@@ -109,7 +109,7 @@ def rocchioAlgorithm2(allqCp,CSV_Data_2):
         valDoc["CLASE ORIGINAL"] = doc["CLASE"]
         valDoc["CLASE OTORGADA"] = 0
         valDoc["SIMILITUDES"] = {}
-        id = doc["DOCID"]
+        id = int(doc['DOCID'])
         for cp in allqCp:
             sumMult = 0
             for value in allqCp[cp]:
@@ -121,10 +121,12 @@ def rocchioAlgorithm2(allqCp,CSV_Data_2):
         valDoc["SIMILITUDES"] = sorted_dict
         valDoc["CLASE OTORGADA"] = max(valDoc["SIMILITUDES"], key=lambda key: valDoc["SIMILITUDES"][key])
         docs[id] = valDoc
-        print(id+"\t"+doc["CLASE"]+"\t"+valDoc["CLASE OTORGADA"])    
+        print(str(id)+"\t"+doc["CLASE"]+"\t"+valDoc["CLASE OTORGADA"])    
     print(" ")
     dictionary_items = docs.items()
     docs = dict(sorted(dictionary_items))
+    res = json.dumps(docs,sort_keys=False, indent=4)
+    print(res)
     return docs
 
 
@@ -265,17 +267,6 @@ def doEvaluation(clasificatorRes, Clases_2):
         recall=(a_numDocsInClassWellAssigned/c_numDocsInClassBySet)
         sucess=((a_numDocsInClassWellAssigned+e_numDocsNotInClassAndNotAssigned)/g_N)
         error=((b_numDocsInClassBadAssigned+d_numDocsNotInClassButAssigned)/g_N)
-        
-        
-        #ini= "Evaluación clase "+clase+"!"+"Documentos que realmente pertenecen a la clase "+clase+"!"+"Documentos que realmente no pertenecen a la clase "+clase+"!"+" "
-        #row_2 = "Documentos que el clasif. dice pertenecen a la clase "+clase+"!"+str(data["a"])+"!"+str(data["d"])+"!"+str(data["f"])
-        #row_3 = "Documentos que el clasif. dice no pertenecen a la clase "+clase+"!"+str(data["b"])+"!"+str(data["e"])+"!"+str(data["i"])
-        #row_4 = " "+"!"+str(data["c"])+"!"+str(data["h"])+"!"+str(data["g"])
-        
-        #print(ini)
-        #print(row_2)
-        #print(row_3)
-        #print(row_4)
         
         data["Metricas"] ={"Precision":precision,"Recall":recall,"Sucess":sucess,"Error":error}
         

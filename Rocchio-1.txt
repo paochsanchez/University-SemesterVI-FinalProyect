@@ -1,4 +1,37 @@
 {
+    "18": {
+        "CLASE ORIGINAL": "coffee",
+        "CLASE OTORGADA": "coffee",
+        "SIMILITUDES": {
+            "coffee": 0.05314743017871666,
+            "grain": 0.011758851873000771,
+            "trade": 0.00698967472954918,
+            "crude": 0.0062383302437851555,
+            "money-fx": 0.0029203271785830276
+        }
+    },
+    "52": {
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.030220328971330895,
+            "trade": 0.026551709345411473,
+            "coffee": 0.020048876711168194,
+            "crude": 0.008421758808207032,
+            "grain": 0.005759897606463847
+        }
+    },
+    "68": {
+        "CLASE ORIGINAL": "money-fx",
+        "CLASE OTORGADA": "money-fx",
+        "SIMILITUDES": {
+            "money-fx": 0.06521756391783272,
+            "coffee": 0.01654504416891212,
+            "trade": 0.006387435443108197,
+            "crude": 0.00512712241004297,
+            "grain": 0.00279062767729077
+        }
+    },
     "111": {
         "CLASE ORIGINAL": "trade",
         "CLASE OTORGADA": "trade",
@@ -63,17 +96,6 @@
             "money-fx": 0.018739406449822953,
             "trade": 0.015357690367555741,
             "grain": 0.006253922468963079
-        }
-    },
-    "18": {
-        "CLASE ORIGINAL": "coffee",
-        "CLASE OTORGADA": "coffee",
-        "SIMILITUDES": {
-            "coffee": 0.05314743017871666,
-            "grain": 0.011758851873000771,
-            "trade": 0.00698967472954918,
-            "crude": 0.0062383302437851555,
-            "money-fx": 0.0029203271785830276
         }
     },
     "192": {
@@ -316,28 +338,6 @@
             "money-fx": 0.009789605579000606,
             "grain": 0.006109179143612305,
             "trade": 0.004493042668604917
-        }
-    },
-    "52": {
-        "CLASE ORIGINAL": "money-fx",
-        "CLASE OTORGADA": "money-fx",
-        "SIMILITUDES": {
-            "money-fx": 0.030220328971330895,
-            "trade": 0.026551709345411473,
-            "coffee": 0.020048876711168194,
-            "crude": 0.008421758808207032,
-            "grain": 0.005759897606463847
-        }
-    },
-    "68": {
-        "CLASE ORIGINAL": "money-fx",
-        "CLASE OTORGADA": "money-fx",
-        "SIMILITUDES": {
-            "money-fx": 0.06521756391783272,
-            "coffee": 0.01654504416891212,
-            "trade": 0.006387435443108197,
-            "crude": 0.00512712241004297,
-            "grain": 0.00279062767729077
         }
     }
 }
